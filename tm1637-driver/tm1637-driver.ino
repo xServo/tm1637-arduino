@@ -33,19 +33,34 @@ class Display {
       active = stopwatch;
       time = millis();
       cnt = 0;
+      isPaused = 0;
     }
+
+
+    void pauseStopwatch() {
+      isPaused = 1;
+    }
+
+    void playStopwatch() {
+      isPaused = 0;
+      time = millis();
+    }
+
+    // TODO DEBUG
+    int getCnt() { return cnt; }
 
 
   private:
     const int stopwatch = 1;
     const int timer = 2;
     int active;
+    bool isPaused;
     unsigned long time;
     int cnt; // used for stopwatch and timers
 };
 
 void Display::step() {
-  if (!active) return;
+  if (!active || isPaused) return;
 
   if (active == stopwatch) {
     // ensure 1 second has passed
@@ -91,8 +106,28 @@ void setup() {
   display.startStopwatch();
 }
 
+// variables used in stopwatch test
+unsigned long test = 0;
+bool isTest = 0;
+
 void loop() {
   display.step();
+
+  // a test to pause the stopwatch at 12s and play again after 5 seconds
+  if (display.getCnt() == 13 && !isTest) {
+    test = millis();
+    display.pauseStopwatch(); 
+    isTest = 1;
+  }
+
+  if (isTest) {
+    if ((millis() - test) > 5000)  {
+      display.playStopwatch();
+    }
+  }
+
+
+
 }
 
 
