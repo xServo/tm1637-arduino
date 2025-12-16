@@ -29,7 +29,6 @@ void Setup() {
   // set up pins
   pinMode(clock_pin, OUTPUT);
   pinMode(data_pin, OUTPUT);  // take control
-  Serial.begin(9600); // TODO BAD IDEA!
 }
 
 void SetDisplay(uint8_t isOn) {
