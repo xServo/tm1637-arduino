@@ -1,6 +1,8 @@
 # TM1637 Arduino Library
 
-The TM1637 is a a IC that is commonly used in Arduino seven-segment display modules. This project is a library for such modules that abstracts away the I2C protocol and operation codes used to communicate with the IC. Users are able to add the library to their sketch and start displaying numbers, time, and temprature to their displays.
+![tm1637_2](https://github.com/user-attachments/assets/d4a286fb-fc22-47fc-8e4f-c3f309ee3eda)
+
+The **TM1637** is an IC commonly used in Arduino seven-segment display modules. This project provides a library for these modules that abstracts away the low-level communication protocol and operation codes required to interface with the IC. By adding the library to their sketch, users can easily display numbers, time, and temperature on their displays.
 
 ### Features
 - Timer
