@@ -8,7 +8,7 @@
 class Display {
   public:
     Display() :
-    active(0) 
+    active(0), temperatureScale(0) 
     {
       Setup();
       ResetAddr();
@@ -17,12 +17,22 @@ class Display {
 
     void step();
 
+    // doesn't include the colon
     void write(int a, int b, int c, int d) {
       ResetAddr();
 
       uint8_t arr[4] = {a, b, c, d};
 
       Write(arr, 0);
+    }
+
+    // includes the colon
+    void writeTime(int a, int b, int c, int d) {
+      ResetAddr();
+
+      uint8_t arr[4] = {a, b, c, d};
+
+      Write(arr, 1);
     }
 
     // turns display on/off
@@ -57,19 +67,49 @@ class Display {
       time = millis();
     }
 
+    // toggles between celcius and fahrenheit
+    void toggleTemperatureScale() {
+      temperatureScale ^= 1; // flip the bit
+    }
+
+    void setTemperature(uint8_t val) {
+      if (val > 99) return; // TODO ERROR 
+
+      // get temp symbol
+      uint8_t scale_reg = 0xC; // celcius
+      if (temperatureScale) {
+        scale_reg = 0xF; // fahrenheit
+      }
+
+      uint8_t to_write[4];
+      to_write[0] = val / 10; // upper digit
+      to_write[1] = val % 10; // lower digit
+      to_write[2] = 0x10; // 0x10 is the degree symbol
+      to_write[3] = scale_reg;
+
+      Write(to_write, 0); 
+    }
+
     // TODO DEBUG
     int getCnt() { return cnt; }
 
 
   private:
+    // constants
     const int stopwatch = 1;
     const int timer = 2;
-    int active;
-    bool isPaused;
-    unsigned long time;
-    unsigned int cnt; // used for stopwatch and timers
+    const int celcius = 0;
+    const int fahrenheit = 1;
 
-    void displayTime(unsigned int cnt);
+    // state info
+    uint8_t active; // Are timer or stopwatch active?
+    unsigned long time; // Last polled time.
+    unsigned int cnt; // Seconds from 0. Used for timers.
+
+    bool isPaused; 
+    uint8_t temperatureScale; // Defaults to celcius.
+
+    void displayTime(unsigned int cnt); 
 };
 
 void Display::step() {
@@ -146,22 +186,24 @@ void Display::setBrightness(uint8_t val) {
 }
 
 
-
 Display display;  // decplare display globally
 void setup() {
   Serial.begin(9600); 
   display.activate();
   display.write(1, 3, 3, 7);
-  display.startStopwatch();
   // display.startStopwatch();
+  // display.startStopwatch();
+
+
+  display.toggleTemperatureScale();
 }
 
 int i=0;
 void loop() {
-  display.step();
-  display.setBrightness(i);
-  delay(50);
+  display.toggleTemperatureScale();
+  display.setTemperature(i);
+  delay(1000);
+
   i++;
-  if (i>7) i=0;
 }
 

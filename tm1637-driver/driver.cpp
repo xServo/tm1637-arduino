@@ -1,5 +1,12 @@
 #include "driver.h"
 
+
+const int colon_code = 0x80; // add this to a hex code to include the colon
+const int brightness_code = 0x88; // add to desired brightness level to set
+const int display_on_code = 0x88; // op code to turn on disp
+const int display_off_code = 0x80; // op code to turn off disp
+const int reset_addr_code = 0xC0; // op code to turn off disp
+
 // indexed to 0-9 followed by A-F followed by degree symbol
 const int hex_codes[17] = {
   0x3F, // 0
@@ -23,11 +30,6 @@ const int hex_codes[17] = {
   0x5C  // degree
 };
 
-const int colon_code = 0x80; // add this to a hex code to include the colon
-const int brightness_code = 0x88; // add to desired brightness level to set
-const int display_on_code = 0x88; // op code to turn on disp
-const int display_off_code = 0x80; // op code to turn off disp
-const int reset_addr_code = 0xC0; // op code to turn off disp
 
 
 void Setup() {
