@@ -5,6 +5,14 @@
 #include "driver.h"
 #include "tm1637.h"
 
+Display::Display() 
+  : active(0), temperatureScale(0) 
+{
+  Setup();
+  ResetAddr();
+}
+
+
 void Display::step() {
   if (!active || isPaused) return;
 

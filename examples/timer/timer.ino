@@ -7,9 +7,12 @@ Display display;
 void setup() {
   display.activate();
 
-  display.write(1, 6, 3, 7);
+  // 997 seconds on the timer 
+  display.startTimer(997);
+
+  delay(2500);
 }
 
 void loop() {
-
+  display.step();
 }

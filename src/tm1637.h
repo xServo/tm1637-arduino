@@ -4,13 +4,7 @@
 
 class Display {
   public:
-    Display() :
-    active(0), temperatureScale(0) 
-    {
-      Setup();
-      ResetAddr();
-    }
-
+    Display();
 
     // needs to be called frequently to keep the timer/stopwatch accurate
     void step();
